@@ -22,7 +22,9 @@ jobs:
       - name: update data
         run: |
           python scripts/fetch.py
-        id: run_script
+      - name: draw map
+        run: |
+          python scripts/map.py
       - name: commit
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
