@@ -42,4 +42,4 @@ for row in df1.to_dict(orient='records'):
                         popup = '<div style="min-width:130px"><p style="margin:5px 0px"><strong>Votos Válidos</strong>: {}</p><p style="margin:5px 0px"><strong>MAS-IPSP</strong>: {:.0%}</p><p style="margin:5px 0px"><strong>CC</strong>: {:.0%}</p></div>'.format(row['VOTO_VALIDO'], row['mas_p'], row['cc_p']),
                         fill_color=row['color']).add_to(folium_map)
 
-folium_map.save('index.html')
+folium_map.save('pagina/index.html')
