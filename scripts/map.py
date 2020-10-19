@@ -31,7 +31,7 @@ df1['size'] = df1.VOTO_VALIDO.apply(lambda row: math.log(row) * 1.3)
 
 folium_map = folium.Map(location = [-16.2980907,-58.462965],
                         zoom_start = 4,
-                        tiles = "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+                        tiles = "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
                         attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
 for row in df1.to_dict(orient='records'):
@@ -39,7 +39,7 @@ for row in df1.to_dict(orient='records'):
                         stroke = False,
                         fill_opacity = .8,
                         radius = row['size'],
-                        popup = '<div style="min-width:130px"><p style="margin:5px 0px"><strong>Votos Válidos</strong>: {}</p><p style="margin:5px 0px"><strong>MAS-IPSP</strong>: {:.0%}</p><p style="margin:5px 0px"><strong>CC</strong>: {:.0%}</p></div>'.format(row['VOTO_VALIDO'], row['mas_p'], row['cc_p']),
+                        popup = '<div style="min-width:130px"><p style="margin:5px 0px"><strong>Recinto</strong>: {}</p><p style="margin:5px 0px"><strong>Votos Válidos</strong>: {}</p><p style="margin:5px 0px"><strong>MAS-IPSP</strong>: {:.0%}</p><p style="margin:5px 0px"><strong>CC</strong>: {:.0%}</p></div>'.format(row['recinto'], row['VOTO_VALIDO'], row['mas_p'], row['cc_p']),
                         fill_color=row['color']).add_to(folium_map)
 
 folium_map.save('docs/index.html')
