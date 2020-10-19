@@ -2,7 +2,6 @@
 
 import requests
 import pandas as pd
-from datetime import datetime
 
 headers = {
     'authority': 'computo.oep.org.bo',
@@ -19,13 +18,12 @@ headers = {
     'sec-fetch-dest': 'empty',
     'referer': 'https://computo.oep.org.bo/',
     'accept-language': 'en-US,en;q=0.9,es;q=0.8',
-    'cookie': '__cfduid=daa9ab4af80430da5e8335616a1d7b9001601047805',
 }
 
-data = '{"tipoArchivo":"CSV"}'
+data = '{"tipoArchivo":"EXCEL"}'
 
 response = requests.post('https://computo.oep.org.bo/api/v1/descargar', headers=headers, data=data)
-
-df = pd.read_csv(response.json()['datoAdicional']['archivo'], encoding='iso-8859-1')
-filename = datetime.strptime(response.json()['datoAdicional']['fecha'], '%d/%m/%Y %H:%M:%S').strftime('datos/%Y-%m-%d_%H-%M-%S.csv')
+excel = requests.get(response.json()['datoAdicional']['archivo']).content
+df = pd.concat([pd.read_excel(excel, sheet_name=i) for i in range(2)])
+filename = 'datos/{}.csv'.format('_'.join(response.json()['datoAdicional']['archivo'].split('/')[-1].split('_')[1:3]))
 df.to_csv(filename, index=False, encoding='utf-8')
