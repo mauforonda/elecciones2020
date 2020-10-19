@@ -1,7 +1,7 @@
 name: Update Repo
 on:
   schedule:
-    - cron: '0/15 * * * *'
+    - cron: '*/15 * * * *'
 jobs:
   update:
     name: update
