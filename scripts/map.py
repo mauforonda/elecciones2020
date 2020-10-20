@@ -27,7 +27,7 @@ df['mas_p'] = df['MAS_IPSP'] / df['VOTO_VALIDO']
 df['cc_p'] = df['CC'] / df['VOTO_VALIDO']
 df['diff'] = df['mas_p'] - df['cc_p']
 df['color'] = df.apply(lambda row: matplotlib.colors.rgb2hex(cmap((row['diff'] + 1) / 2)[:3]), axis=1)
-df['size'] = df.VOTO_VALIDO.apply(lambda row: math.log(row))
+df['size'] = df.VOTO_VALIDO.apply(lambda row: math.log(row) if row > 0 else 1)
 df['recinto'] = df['recinto'].str.replace('`','')
 
 folium_map = folium.Map(location = [-16.2980907,-58.462965],
