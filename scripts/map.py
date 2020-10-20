@@ -13,6 +13,7 @@ locations = locations[locations.columns[:5]]
 locations.columns = ['recinto', 'latitud', 'longitud', 'mesas', 'habilitados']
 
 votos = pd.read_csv('datos/'+sorted(os.listdir('datos'))[-1])
+votos = votos[votos.CANDIDATURA == 'PRESIDENTE']
 votos = votos[['ID_LOCALIDAD', 'ID_RECINTO', 'INSCRITOS_HABILITADOS', 'CREEMOS', 'ADN', 'MAS_IPSP', 'FPV', 'PAN_BOL', 'LIBRE_21', 'CC', 'JUNTOS', 'VOTO_VALIDO', 'VOTO_BLANCO', 'VOTO_NULO', 'VOTO_EMITIDO', 'VOTO_VALIDO_SISTEMA', 'VOTO_EMITIDO_SISTEMA']]
 votos['id'] = (votos.ID_LOCALIDAD.astype(str) + votos.ID_RECINTO.astype(str)).astype(int)
 votos = votos.drop(columns = ['ID_LOCALIDAD', 'ID_RECINTO'])
@@ -26,7 +27,7 @@ df['mas_p'] = df['MAS_IPSP'] / df['VOTO_VALIDO']
 df['cc_p'] = df['CC'] / df['VOTO_VALIDO']
 df['diff'] = df['mas_p'] - df['cc_p']
 df['color'] = df.apply(lambda row: matplotlib.colors.rgb2hex(cmap((row['diff'] + 1) / 2)[:3]), axis=1)
-df['size'] = df.VOTO_VALIDO.apply(lambda row: math.log(row) * 1.3)
+df['size'] = df.VOTO_VALIDO.apply(lambda row: math.log(row))
 df['recinto'] = df['recinto'].str.replace('`','')
 
 folium_map = folium.Map(location = [-16.2980907,-58.462965],
