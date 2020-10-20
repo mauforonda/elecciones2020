@@ -21,20 +21,20 @@ votos = votos.groupby('id').sum()
 df = pd.concat([locations, votos], axis=1).dropna()
 
 cmap = plt.cm.get_cmap('RdYlBu')
-df1 = df.copy()
-df1['VOTO_VALIDO'] = df1['VOTO_VALIDO'].astype(int)
-df1['mas_p'] = df['MAS_IPSP'] / df['VOTO_VALIDO']
-df1['cc_p'] = df['CC'] / df['VOTO_VALIDO']
-df1['diff'] = df1['mas_p'] - df1['cc_p']
-df1['color'] = df1.apply(lambda row: matplotlib.colors.rgb2hex(cmap((row['diff'] + 1) / 2)[:3]), axis=1)
-df1['size'] = df1.VOTO_VALIDO.apply(lambda row: math.log(row) * 1.3)
+df['VOTO_VALIDO'] = df['VOTO_VALIDO'].astype(int)
+df['mas_p'] = df['MAS_IPSP'] / df['VOTO_VALIDO']
+df['cc_p'] = df['CC'] / df['VOTO_VALIDO']
+df['diff'] = df['mas_p'] - df['cc_p']
+df['color'] = df.apply(lambda row: matplotlib.colors.rgb2hex(cmap((row['diff'] + 1) / 2)[:3]), axis=1)
+df['size'] = df.VOTO_VALIDO.apply(lambda row: math.log(row) * 1.3)
+df['recinto'] = df['recinto'].str.replace('`','')
 
 folium_map = folium.Map(location = [-16.2980907,-58.462965],
                         zoom_start = 4,
                         tiles = "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
                         attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
-for row in df1.to_dict(orient='records'):
+for row in df.to_dict(orient='records'):
     folium.CircleMarker(location=[row['latitud'], row['longitud']],
                         stroke = False,
                         fill_opacity = .8,
