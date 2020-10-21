@@ -3,6 +3,7 @@
 import pandas as pd
 import os
 import folium
+from folium.plugins import FloatImage
 import matplotlib
 import matplotlib.pyplot as plt
 import math
@@ -36,8 +37,8 @@ df['color'] = df.apply(lambda row: matplotlib.colors.rgb2hex(cmap((row['diff'] +
 df['size'] = df.VOTO_VALIDO.apply(lambda row: math.log(row) if row > 0 else 1)
 df['recinto'] = df['recinto'].str.replace('`','')
 
-folium_map = folium.Map(location = [-16.2980907,-58.462965],
-                        zoom_start = 4,
+folium_map = folium.Map(location = [-16.4340009,-65.2686204],
+                        zoom_start = 6,
                         tiles = "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
                         attr = '<a href="https://www.openstreetmap.org/copyright">OSM</a> | Datos de cómputo del {}'.format(datetime.strptime(filename, '%Y%m%d_%H%M%S.csv').strftime('%Y/%m/%d a las %H:%M')))
 for row in df.to_dict(orient='records'):
@@ -48,4 +49,5 @@ for row in df.to_dict(orient='records'):
                         popup = '<div style="min-width:130px"><p style="margin:5px 0px"><strong>Recinto</strong>: {}</p><p style="margin:5px 0px"><strong>Votos Válidos</strong>: {}</p><p style="margin:5px 0px"><strong>MAS-IPSP</strong>: {:.0%}</p><p style="margin:5px 0px"><strong>CC</strong>: {:.0%}</p><p style="margin:5px 0px"><strong>CREEMOS</strong>: {:.0%}</p></div>'.format(row['recinto'], row['VOTO_VALIDO'], row['mas_p'], row['cc_p'], row['creemos_p']),
                         fill_color=row['color']).add_to(folium_map)
 
+FloatImage('./legend.png', bottom=5, left=5).add_to(folium_map)
 folium_map.save('docs/index.html')
