@@ -6,13 +6,15 @@ import folium
 import matplotlib
 import matplotlib.pyplot as plt
 import math
+from datetime import datetime
 
 locations = pd.concat([pd.read_excel('scripts/2020_geo_padron_final.xlsx', sheet_name=i)[['Recinto', 'latitud', 'longitud', 'Mesas', 'Habilitados', 'idloc', 'RECI']] for i in [0,1]], axis=0)
 locations.index = (locations.idloc.astype(str) + locations.RECI.astype(str)).astype(int)
 locations = locations[locations.columns[:5]]
 locations.columns = ['recinto', 'latitud', 'longitud', 'mesas', 'habilitados']
 
-votos = pd.read_csv('datos/'+sorted(os.listdir('datos'))[-1])
+filename = sorted(os.listdir('datos'))[-1]
+votos = pd.read_csv('datos/'+filename)
 votos = votos[votos.CANDIDATURA == 'PRESIDENTE']
 votos = votos[['ID_LOCALIDAD', 'ID_RECINTO', 'INSCRITOS_HABILITADOS', 'CREEMOS', 'ADN', 'MAS_IPSP', 'FPV', 'PAN_BOL', 'LIBRE_21', 'CC', 'JUNTOS', 'VOTO_VALIDO', 'VOTO_BLANCO', 'VOTO_NULO', 'VOTO_EMITIDO', 'VOTO_VALIDO_SISTEMA', 'VOTO_EMITIDO_SISTEMA']]
 votos['id'] = (votos.ID_LOCALIDAD.astype(str) + votos.ID_RECINTO.astype(str)).astype(int)
@@ -34,7 +36,7 @@ df['recinto'] = df['recinto'].str.replace('`','')
 folium_map = folium.Map(location = [-16.2980907,-58.462965],
                         zoom_start = 4,
                         tiles = "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
-                        attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
+                        attr = 'Datos de cómputo del {}'.format(datetime.strptime(filename, '%Y%m%d_%H%M%S.csv').strftime('%Y/%m/%d a las %H:%M')))
 
 for row in df.to_dict(orient='records'):
     folium.CircleMarker(location=[row['latitud'], row['longitud']],
