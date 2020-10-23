@@ -39,7 +39,7 @@ df['recinto'] = df['recinto'].str.replace('`','')
 
 folium_map = folium.Map(location = [-16.4340009,-65.2686204],
                         zoom_start = 6,
-                        tiles = "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+                        tiles = "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
                         attr = '<a href="https://www.openstreetmap.org/copyright">OSM</a> | Datos de cómputo del {}'.format(datetime.strptime(filename, '%Y%m%d_%H%M%S.csv').strftime('%Y/%m/%d a las %H:%M')))
 for row in df.to_dict(orient='records'):
     folium.CircleMarker(location=[row['latitud'], row['longitud']],
