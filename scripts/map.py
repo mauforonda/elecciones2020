@@ -24,7 +24,7 @@ votos = votos.groupby('id').sum()
 
 df = pd.concat([locations, votos], axis=1).dropna()
 
-cmap = plt.cm.get_cmap('RdYlBu')
+cmap = plt.cm.get_cmap('RdBu')
 df['VOTO_VALIDO'] = df['VOTO_VALIDO'].astype(int)
 df = df[df['VOTO_VALIDO'] > 0]
 df['mas_p'] = df['MAS_IPSP'] / df['VOTO_VALIDO']
